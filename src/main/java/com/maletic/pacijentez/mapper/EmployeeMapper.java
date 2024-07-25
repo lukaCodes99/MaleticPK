@@ -16,7 +16,9 @@ public class EmployeeMapper {
     }
 
     public EmployeeDTO mapEmployeeToEmployeeDTO(Employee employee) {
-        return modelMapper.map(employee, EmployeeDTO.class);
+        EmployeeDTO dto = modelMapper.map(employee, EmployeeDTO.class);
+        dto.setRole(employee.getRole().getName());
+        return dto;
     }
 
     public Employee mapEmployeeDTOToEmployee(EmployeeDTO employeeDTO) {

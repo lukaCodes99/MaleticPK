@@ -15,6 +15,6 @@ INSERT INTO Treatment ( name, price) VALUES
 ( 'Treatment Two', 200);
 
 -- Insert into PatientTreatment
-INSERT INTO PatientTreatment (patientId, treatmentId, inserterId, insertedAt) VALUES
-(1, 1, 1, '2023-01-01T00:00:00'),
-(1, 2, 2, '2023-01-02T00:00:00');
+-- INSERT INTO PatientTreatment (patientId, treatmentId, inserterId, insertedAt) VALUES
+-- (1, 1, 1, '2023-01-01T00:00:00'),
+-- (1, 2, 2, '2023-01-02T00:00:00');

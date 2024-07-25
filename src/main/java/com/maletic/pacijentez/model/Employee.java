@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @EqualsAndHashCode
 @Entity
 @Data
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "Employee")
 public class Employee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,7 +28,15 @@ public class Employee {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "role")
-    private String role;
+
+
+
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "EmployeeRole",
+//            joinColumns = @JoinColumn(name = "employeeId"),
+//            inverseJoinColumns = @JoinColumn(name = "roleId"))
+    @JoinColumn(name = "role", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserRole role;
 
 }
