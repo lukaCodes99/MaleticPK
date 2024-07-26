@@ -1,6 +1,8 @@
 package com.maletic.pacijentez.controller;
 
 import com.maletic.pacijentez.dto.EmployeeDTO;
+import com.maletic.pacijentez.dto.PasswordUpdateDTO;
+import com.maletic.pacijentez.dto.SetEmployeeDTO;
 import com.maletic.pacijentez.model.Employee;
 import com.maletic.pacijentez.service.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -37,15 +39,18 @@ public class EmployeeController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<EmployeeDTO> saveNewEmployee(@RequestBody EmployeeDTO employee){
+    public ResponseEntity<Object> saveNewEmployee(@RequestBody SetEmployeeDTO employee){
 
+        if(employeeService.exsistsByUsername(employee.getUsername())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+        }
         EmployeeDTO savedEmployeeDTO = employeeService.saveEmployee(employee);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployeeDTO);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee) {
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody SetEmployeeDTO employee) {
         EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployee(employee);
         if (updatedEmployeeDTO == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -57,6 +62,16 @@ public class EmployeeController {
     @DeleteMapping("/delete/{id}")
     public void deleteEmployee(@PathVariable Integer id) {
         employeeService.deleteEmployee(id);
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<String> updatePassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+        boolean isUpdated = employeeService.updatePassword(passwordUpdateDTO.getEmployeeId(), passwordUpdateDTO.getOldPassword(), passwordUpdateDTO.getNewPassword());
+        if (isUpdated) {
+            return ResponseEntity.ok("Password updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid old password or employee not found");
+        }
     }
 
 }

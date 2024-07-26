@@ -1,4 +1,4 @@
-package com.maletic.pacijentez.JWT;
+package com.maletic.pacijentez.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,6 +21,8 @@ public class JwtService {
 
     @Value("${jwt.secret}")
     public String SECRET;
+    @Value("${jwt.token.validity-seconds}")
+    private long validityInSeconds;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -64,7 +66,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*6000*1))
+                .setExpiration(new Date(System.currentTimeMillis() + validityInSeconds * 1000)) //conversion to millis
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

@@ -2,10 +2,8 @@ package com.maletic.pacijentez.dto;
 
 import lombok.*;
 
-@EqualsAndHashCode
-@ToString
-@Getter
-@Setter
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TreatmentDTO {

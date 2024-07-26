@@ -2,6 +2,7 @@ package com.maletic.pacijentez.mapper;
 
 
 import com.maletic.pacijentez.dto.EmployeeDTO;
+import com.maletic.pacijentez.dto.SetEmployeeDTO;
 import com.maletic.pacijentez.model.Employee;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -23,5 +24,9 @@ public class EmployeeMapper {
 
     public Employee mapEmployeeDTOToEmployee(EmployeeDTO employeeDTO) {
         return modelMapper.map(employeeDTO, Employee.class);
+    }
+
+    public Employee mapSetEmployeeDTOToEmployee(SetEmployeeDTO employee) {
+        return modelMapper.map(employee, Employee.class);
     }
 }

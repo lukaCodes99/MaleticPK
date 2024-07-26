@@ -3,10 +3,7 @@ package com.maletic.pacijentez.dto;
 import jakarta.persistence.Column;
 import lombok.*;
 
-@EqualsAndHashCode
-@ToString
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDTO {

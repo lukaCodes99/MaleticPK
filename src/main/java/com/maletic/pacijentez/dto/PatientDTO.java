@@ -4,10 +4,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode
-@ToString
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientDTO {

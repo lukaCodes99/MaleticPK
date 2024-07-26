@@ -2,10 +2,12 @@ package com.maletic.pacijentez.service;
 
 
 import com.maletic.pacijentez.dto.EmployeeDTO;
+import com.maletic.pacijentez.dto.SetEmployeeDTO;
 import com.maletic.pacijentez.mapper.EmployeeMapper;
 import com.maletic.pacijentez.model.Employee;
 import com.maletic.pacijentez.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +19,12 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
-    public EmployeeDTO saveEmployee(EmployeeDTO employee) {
+    private final BCryptPasswordEncoder passwordEncoder;
 
-        Employee savedEmployee = employeeRepository.save(employeeMapper.mapEmployeeDTOToEmployee(employee));
+    public EmployeeDTO saveEmployee(SetEmployeeDTO employee) {
+
+        Employee savedEmployee = employeeMapper.mapSetEmployeeDTOToEmployee(employee);
+        savedEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
         return employeeMapper.mapEmployeeToEmployeeDTO(savedEmployee);
     }
 
@@ -31,15 +36,29 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElse(null);
     }
 
-    public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeDTO updateEmployee(SetEmployeeDTO employeeDTO) {
         if(employeeRepository.findById(employeeDTO.getId()).isEmpty()){
             return null;
         }
-        Employee savedEmployee = employeeRepository.save(employeeMapper.mapEmployeeDTOToEmployee(employeeDTO));
+        Employee savedEmployee = employeeRepository.save(employeeMapper.mapSetEmployeeDTOToEmployee(employeeDTO));
         return employeeMapper.mapEmployeeToEmployeeDTO(savedEmployee);
     }
 
     public void deleteEmployee(Integer id) {
         employeeRepository.deleteById(id);
+    }
+
+    public boolean exsistsByUsername(String username) {
+        return employeeRepository.existsByUsername(username);
+    }
+
+    public boolean updatePassword(Integer employeeId, String oldPassword, String newPassword) {
+        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if (employee == null || !passwordEncoder.matches(oldPassword, employee.getPassword())) {
+            return false;
+        }
+        employee.setPassword(passwordEncoder.encode(newPassword));
+        employeeRepository.save(employee);
+        return true;
     }
 }
