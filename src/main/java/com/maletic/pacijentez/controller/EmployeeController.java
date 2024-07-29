@@ -40,10 +40,11 @@ public class EmployeeController {
 
     @PostMapping("/save")
     public ResponseEntity<Object> saveNewEmployee(@RequestBody SetEmployeeDTO employee){
-
+        System.out.println(employee);
         if(employeeService.exsistsByUsername(employee.getUsername())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
+        System.out.println("futzuzt66t66t6t66t6666666");
         EmployeeDTO savedEmployeeDTO = employeeService.saveEmployee(employee);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployeeDTO);

@@ -25,7 +25,7 @@ public class EmployeeService {
 
         Employee savedEmployee = employeeMapper.mapSetEmployeeDTOToEmployee(employee);
         savedEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        return employeeMapper.mapEmployeeToEmployeeDTO(savedEmployee);
+        return employeeMapper.mapEmployeeToEmployeeDTO(employeeRepository.save(savedEmployee));
     }
 
     public List<EmployeeDTO> getAllEmployees() {
