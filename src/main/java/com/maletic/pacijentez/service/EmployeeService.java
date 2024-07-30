@@ -23,9 +23,9 @@ public class EmployeeService {
 
     public EmployeeDTO saveEmployee(SetEmployeeDTO employee) {
 
-        Employee savedEmployee = employeeMapper.mapSetEmployeeDTOToEmployee(employee);
-        savedEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        return employeeMapper.mapEmployeeToEmployeeDTO(employeeRepository.save(savedEmployee));
+        Employee employeeToSave = employeeMapper.mapSetEmployeeDTOToEmployee(employee);
+        employeeToSave.setPassword(passwordEncoder.encode(employee.getPassword()));
+        return employeeMapper.mapEmployeeToEmployeeDTO(employeeRepository.save(employeeToSave));
     }
 
     public List<EmployeeDTO> getAllEmployees() {
@@ -40,8 +40,10 @@ public class EmployeeService {
         if(employeeRepository.findById(employeeDTO.getId()).isEmpty()){
             return null;
         }
-        Employee savedEmployee = employeeRepository.save(employeeMapper.mapSetEmployeeDTOToEmployee(employeeDTO));
-        return employeeMapper.mapEmployeeToEmployeeDTO(savedEmployee);
+
+        Employee savedEmployee = employeeMapper.mapSetEmployeeDTOToEmployee(employeeDTO);
+        savedEmployee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
+        return employeeMapper.mapEmployeeToEmployeeDTO(employeeRepository.save(savedEmployee));
     }
 
     public void deleteEmployee(Integer id) {

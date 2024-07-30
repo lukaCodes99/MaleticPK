@@ -3,6 +3,7 @@ package com.maletic.pacijentez.service;
 import com.maletic.pacijentez.model.RefreshToken;
 import com.maletic.pacijentez.repository.EmployeeRepository;
 import com.maletic.pacijentez.repository.RefreshTokenRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +31,18 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
+
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new RuntimeException("Refresh token has expired. Login again.");
         }
         return token;
+    }
+
+    @Transactional
+    public void deleteRefreshToken(String token) {
+        refreshTokenRepository.deleteByToken(token);
     }
 
 }
