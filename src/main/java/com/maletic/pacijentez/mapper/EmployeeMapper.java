@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class EmployeeMapper {
 
     private final RoleRepository roleRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public EmployeeMapper(RoleRepository roleRepository) {
         this.modelMapper = new ModelMapper();

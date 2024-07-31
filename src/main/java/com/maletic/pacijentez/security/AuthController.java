@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +37,10 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         if(authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             RefreshToken refreshToken = refreshTokenService.generateRefreshToken(request.getUsername());
             return JwtResponseDTO.builder()
-                    .accessToken(jwtService.generateToken(request.getUsername()))
+                    .accessToken(jwtService.generateToken(userDetails))
                     .refreshToken(refreshToken.getToken())
                     .build();
         }
@@ -51,7 +53,8 @@ public class AuthController {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getEmployee)
                 .map(userInfo -> {
-                    String token = jwtService.generateToken(userInfo.getUsername());
+                    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    String token = jwtService.generateToken(userDetails);
                     return JwtResponseDTO.builder()
                             .accessToken(token)
                             .refreshToken(request.getToken())
