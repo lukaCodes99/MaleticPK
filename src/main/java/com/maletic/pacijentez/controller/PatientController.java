@@ -6,6 +6,7 @@ import com.maletic.pacijentez.model.Patient;
 import com.maletic.pacijentez.service.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/patient")
 @CrossOrigin(origins = "http://localhost:4200")
+@PreAuthorize("hasAnyAuthority('admin', 'doctor', 'nurse', 'head_nurse')")
 public class PatientController {
 
     private PatientService patientService;
@@ -49,6 +51,7 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedEmployeeDTO);
     }
 
+    @PreAuthorize("hasAnyAuthority('admin', 'doctor', 'head_nurse')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/delete/{id}")
     public void deletePatient(@PathVariable Integer id) {
