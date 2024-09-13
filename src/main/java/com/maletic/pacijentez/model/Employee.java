@@ -20,21 +20,19 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "firstName")
     private String firstName;
+
     @Column(name = "lastName")
     private String lastName;
+
     @Column(name = "username")
     private String username;
+
     @Column(name = "password")
     private String password;
 
-
-
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(name = "EmployeeRole",
-//            joinColumns = @JoinColumn(name = "employeeId"),
-//            inverseJoinColumns = @JoinColumn(name = "roleId"))
     @JoinColumn(name = "role", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private UserRole role;

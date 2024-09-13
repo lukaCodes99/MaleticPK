@@ -64,8 +64,8 @@ public class JwtService {
         return createToken(claims, userDetails.getUsername());
     }
 
+    @SuppressWarnings("deprecation")
     private String createToken(Map<String, Object> claims, String username) {
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
