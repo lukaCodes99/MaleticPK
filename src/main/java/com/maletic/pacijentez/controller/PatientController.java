@@ -24,9 +24,14 @@ public class PatientController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PatientDTO>> getAllPatients() {
-        return ResponseEntity.ok(patientService.getAllPatients());
+    public ResponseEntity<List<PatientDTO>> getAllPatients(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String email
+    ) {
+        return ResponseEntity.ok(patientService.getAllFilteredPatients(firstName, lastName, email));
     }
+    
 
     @GetMapping("/{id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable Integer id) {

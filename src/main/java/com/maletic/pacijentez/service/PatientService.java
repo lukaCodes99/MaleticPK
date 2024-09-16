@@ -20,7 +20,14 @@ public class PatientService {
         return patientRepository.findAll()
                 .stream()
                 .map(patientMapper::mapPatientToPatientDTO)
-                .collect(java.util.stream.Collectors.toList());
+                .toList();
+    }
+
+    public List<PatientDTO> getAllFilteredPatients(String firstName, String lastName, String email) {
+        return patientRepository.getFIlteredPatients(firstName, lastName, email)
+                .stream()
+                .map(patientMapper::mapPatientToPatientDTO)
+                .toList();
     }
 
     public Patient getPatientById(Integer id) {

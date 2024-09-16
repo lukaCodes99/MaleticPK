@@ -1,5 +1,6 @@
 package com.maletic.pacijentez.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class Employee {
     @Column(name = "username")
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
@@ -37,4 +39,7 @@ public class Employee {
     @ManyToOne(fetch = FetchType.EAGER)
     private UserRole role;
 
+    public Employee(Integer id) {
+        this.id = id;
+    }
 }

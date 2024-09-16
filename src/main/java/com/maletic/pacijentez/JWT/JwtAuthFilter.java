@@ -1,7 +1,9 @@
+// src/main/java/com/maletic/pacijentez/JWT/JwtAuthFilter.java
 package com.maletic.pacijentez.JWT;
 
 import com.maletic.pacijentez.security.CustomUserDetailsService;
 import com.maletic.pacijentez.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +33,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            username = jwtService.extractUsername(token);
+            try {
+                username = jwtService.extractUsername(token);
+            } catch (ExpiredJwtException e) {
+                token = jwtService.refreshToken(token);
+                response.setHeader("Authorization", "Bearer " + token);
+                username = jwtService.extractUsername(token);
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

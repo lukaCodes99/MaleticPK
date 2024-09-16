@@ -1,5 +1,66 @@
 package com.maletic.pacijentez.controller;
 
+import com.maletic.pacijentez.command.PatientTreatmentCommand;
+import com.maletic.pacijentez.dto.PatientDTO;
+import com.maletic.pacijentez.dto.PatientTreatmentDTO;
+import com.maletic.pacijentez.model.PatientTreatment;
+import com.maletic.pacijentez.service.PatientTreatmentService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/patient-treatment")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PatientTreatmentController {
+
+    private final PatientTreatmentService patientTreatmentService;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<PatientTreatmentDTO>> getAllPatientTreatments(
+            @RequestParam(required = false) String patientName,
+            @RequestParam(required = false) String treatmentName,
+            @RequestParam(required = false) String inserterName,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String appointmentTime // yyyy-MM-dd
+
+    ) {
+        return ResponseEntity.ok(patientTreatmentService.findFiltered(patientName, treatmentName, inserterName, description, location, appointmentTime));
+    }
+
+    @GetMapping("/patient/{id}")
+    public ResponseEntity<List<PatientTreatmentDTO>> getPatientTreatmentsByPatientId(@PathVariable Integer id) {
+        return ResponseEntity.ok(patientTreatmentService.findPatientTreatmentByPatientId_Id(id));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<PatientTreatmentDTO> savePatientTreatment(@RequestBody PatientTreatmentCommand patientTreatmentDTO) {
+        return ResponseEntity.ok(patientTreatmentService.savePatientTreatment(patientTreatmentDTO));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PatientTreatment> getPatientTreatmentById(@PathVariable Integer id) {
+        PatientTreatment patientTreatment = patientTreatmentService.getPatientTreatmentById(id);
+        if (patientTreatment == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(patientTreatment);
+    }
+
+    private LocalDateTime parseDateTimeOrReturnNull(String date) {
+        if (date != null && !date.equals("null")) {
+            return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+        }
+        else {
+            return null;
+        }
+    }
 
 }

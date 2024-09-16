@@ -21,4 +21,8 @@ public class Treatment {
     @Column(name = "price")
     private Long price;
 
+    public Treatment(Integer id) {
+        this.id = id;
+    }
+
 }

@@ -23,6 +23,7 @@ public class TreatmentService {
                 .toList();
     }
 
+
     public Treatment getTreatmentById(Integer id) {
         return treatmentRepository.findById(id).orElse(null);
     }

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "Patient")
 public class Patient {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,6 +26,13 @@ public class Patient {
 
     @Column(name = "phoneNumber")
     private String phoneNumber;
+
+    @Column(name = "email")
+    private String email;
+
+    public Patient(Integer id) {
+        this.id = id;
+    }
 }
 
 //vezne tablic tretmant_pacijenta ali da ima i inserter i modifier
