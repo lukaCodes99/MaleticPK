@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @SpringBootApplication
 public class PacijentEzApplication {
@@ -20,6 +21,7 @@ public class PacijentEzApplication {
 
     @Bean
     public CommandLineRunner clearRefreshTokenTable() {
+        SecurityContextHolder.clearContext();
         return args -> {
             refreshTokenRepository.deleteAll();
         };

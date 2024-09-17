@@ -6,6 +6,9 @@ import com.maletic.pacijentez.dto.PatientTreatmentDTO;
 import com.maletic.pacijentez.model.PatientTreatment;
 import com.maletic.pacijentez.service.PatientTreatmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,17 +35,31 @@ public class PatientTreatmentController {
             @RequestParam(required = false) String appointmentTime // yyyy-MM-dd
 
     ) {
-        return ResponseEntity.ok(patientTreatmentService.findFiltered(patientName, treatmentName, inserterName, description, location, appointmentTime));
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        Pageable pageable = PageRequest.of(0, 5000, sort);
+
+        return ResponseEntity.ok(patientTreatmentService.findFiltered(patientName, treatmentName, inserterName, description, location, appointmentTime, pageable));
     }
 
     @GetMapping("/patient/{id}")
     public ResponseEntity<List<PatientTreatmentDTO>> getPatientTreatmentsByPatientId(@PathVariable Integer id) {
-        return ResponseEntity.ok(patientTreatmentService.findPatientTreatmentByPatientId_Id(id));
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        Pageable pageable = PageRequest.of(0, 5000, sort);
+        return ResponseEntity.ok(patientTreatmentService.findPatientTreatmentByPatientId_Id(id, pageable));
     }
 
     @PostMapping("/add")
     public ResponseEntity<PatientTreatmentDTO> savePatientTreatment(@RequestBody PatientTreatmentCommand patientTreatmentDTO) {
         return ResponseEntity.ok(patientTreatmentService.savePatientTreatment(patientTreatmentDTO));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<PatientTreatmentDTO> updatePatientTreatment(@PathVariable Integer id, @RequestBody PatientTreatmentCommand patientTreatment) {
+        if(patientTreatmentService.getPatientTreatmentById(id) == null){
+            return ResponseEntity.notFound().build();
+        }
+        patientTreatment.setId(id);
+        return ResponseEntity.ok(patientTreatmentService.updatePatientTreatment(patientTreatment));
     }
 
     @GetMapping("/{id}")
@@ -52,6 +69,12 @@ public class PatientTreatmentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(patientTreatment);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deletePatientTreatment(@PathVariable Integer id) {
+        patientTreatmentService.deletePatientTreatment(id);
+        return ResponseEntity.noContent().build();
     }
 
     private LocalDateTime parseDateTimeOrReturnNull(String date) {

@@ -9,6 +9,7 @@ import com.maletic.pacijentez.repository.EmployeeRepository;
 import com.maletic.pacijentez.repository.PatientTreatmentRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -48,11 +49,14 @@ public class PatientTreatmentService {
         return patientTreatmentMapper.mapPTtoPTdto(patientTreatmentRepository.save(patientTreatment));
     }
 
-    public PatientTreatmentDTO updatePatientTreatment(PatientTreatmentDTO patientTreatment) {
-        if(patientTreatmentRepository.findById(patientTreatment.getId()).isEmpty()){
+    public PatientTreatmentDTO updatePatientTreatment(PatientTreatmentCommand patientTreatment) {
+        PatientTreatment exstistingTreatment = patientTreatmentRepository.findById(patientTreatment.getId()).orElse(null);
+        if(exstistingTreatment == null){
             return null;
         }
-        PatientTreatment updatedPatientTreatment = patientTreatmentMapper.mapPTdtoToPT(patientTreatment);
+        System.out.println("inserted at" + exstistingTreatment.getInsertedAt());
+        PatientTreatment updatedPatientTreatment = patientTreatmentMapper.mapCommandToEntity(patientTreatment);
+        updatedPatientTreatment.setInsertedAt(exstistingTreatment.getInsertedAt());
         return patientTreatmentMapper.mapPTtoPTdto(patientTreatmentRepository.save(updatedPatientTreatment));
     }
 
@@ -61,11 +65,17 @@ public class PatientTreatmentService {
     }
 
 
-    public List<PatientTreatmentDTO> findFiltered(String patientName, String treatmentName, String inserterName, String description, String location, String date) {
+    public List<PatientTreatmentDTO> findFiltered(String patientName, String treatmentName, String inserterName,
+                                                  String description, String location, String date, Pageable pageable) {
         LocalDateTime appointmentDateFrom = parseDateTimeOrReturnNull(date, false); // Start of the day
         LocalDateTime appointmentDateTo = parseDateTimeOrReturnNull(date, true); // End of the day
 
-        return patientTreatmentRepository.findFiltered(patientName, treatmentName, inserterName, location, description, appointmentDateFrom, appointmentDateTo)
+        patientName = convertStringToLowerCase(patientName);
+        treatmentName = convertStringToLowerCase(treatmentName);
+        inserterName = convertStringToLowerCase(inserterName);
+        description = convertStringToLowerCase(description);
+
+        return patientTreatmentRepository.findFiltered(patientName, treatmentName, inserterName, location, description, appointmentDateFrom, appointmentDateTo, pageable)
                 .stream()
                 .map(patientTreatmentMapper::mapPTtoPTdto)
                 .toList();
@@ -96,11 +106,15 @@ public class PatientTreatmentService {
         return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-        public List<PatientTreatmentDTO> findPatientTreatmentByPatientId_Id(Integer id) {
-        return patientTreatmentRepository.findPatientTreatmentByPatientId_Id(id)
+        public List<PatientTreatmentDTO> findPatientTreatmentByPatientId_Id(Integer id, Pageable pageable) {
+        return patientTreatmentRepository.findPatientTreatmentByPatientId_Id(id, pageable)
                 .stream()
                 .map(patientTreatmentMapper::mapPTtoPTdto)
                 .collect(Collectors.toList());
+    }
+
+    private String convertStringToLowerCase(String string) {
+        return string == null ? null : string.toLowerCase();
     }
 
 
