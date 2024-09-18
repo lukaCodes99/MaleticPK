@@ -1,12 +1,11 @@
 package com.maletic.pacijentez.controller;
 
 import com.maletic.pacijentez.service.SmsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TestController {
 
     private SmsService smsService;
@@ -16,9 +15,9 @@ public class TestController {
     }
 
     @PostMapping("/sms")
-    public void sendSms() {
+    public void sendSms(@RequestParam String fullName) {
         try {
-            smsService.sendSms();
+            smsService.sendSms(fullName);
         } catch (Exception e) {
             e.printStackTrace();
         }

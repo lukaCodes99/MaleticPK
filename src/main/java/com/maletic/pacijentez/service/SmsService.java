@@ -16,13 +16,16 @@ public class SmsService {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
     }
 
-    public void sendSms() {
+    public void sendSms(String body) {
         String to = "+385993327725";
-        String body = "Di si kralju";
+        String poruka = "Lijepi pozdrav, " + body + "! "
+                + "Hvala što ste posjetili Polikliniku Maletić! Bili bismo Vam zahvalni ako biste podijelili svoje iskustvo ostavljanjem recenzije "
+                + "na sljedećoj poveznici: https://www.google.com/search?q=poliklinika+maletic"
+                + "\n" + "Vaša Poliklinika Maletić";
         Message message = Message.creator(
                 new PhoneNumber(to),  // To number
                 new PhoneNumber("+13133297307"),  // From number
-                body   // SMS body
+                poruka   // SMS body
         ).create();
         System.out.println("Message SID: " + message.getSid());
     }
