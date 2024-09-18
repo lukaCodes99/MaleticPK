@@ -12,9 +12,9 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     @Query("SELECT p FROM Patient p WHERE " +
-            "(:firstNameParam IS NULL OR p.firstName LIKE %:firstNameParam%) AND " +
-            "(:lastNameParam IS NULL OR p.lastName LIKE %:lastNameParam%) AND " +
-            "(:emailParam IS NULL OR p.email LIKE %:emailParam%)"
+            "(:firstNameParam IS NULL OR LOWER(p.firstName) LIKE %:firstNameParam%) AND " +
+            "(:lastNameParam IS NULL OR LOWER(p.lastName) LIKE %:lastNameParam%) AND " +
+            "(:emailParam IS NULL OR LOWER(p.email) LIKE %:emailParam%)"
     )
     List<Patient> getFIlteredPatients(@Param("firstNameParam") String firstName,
                     @Param("lastNameParam") String lastName,

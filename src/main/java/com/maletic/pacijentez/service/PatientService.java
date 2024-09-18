@@ -24,6 +24,10 @@ public class PatientService {
     }
 
     public List<PatientDTO> getAllFilteredPatients(String firstName, String lastName, String email) {
+        if (firstName != null) firstName = firstName.toLowerCase();
+        if (lastName != null) lastName = lastName.toLowerCase();
+        if (email != null) email = email.toLowerCase();
+
         return patientRepository.getFIlteredPatients(firstName, lastName, email)
                 .stream()
                 .map(patientMapper::mapPatientToPatientDTO)
