@@ -74,6 +74,7 @@ public class PatientTreatmentService {
         treatmentName = convertStringToLowerCase(treatmentName);
         inserterName = convertStringToLowerCase(inserterName);
         description = convertStringToLowerCase(description);
+        location = convertStringToLowerCase(location);
 
         return patientTreatmentRepository.findFiltered(patientName, treatmentName, inserterName, location, description, appointmentDateFrom, appointmentDateTo, pageable)
                 .stream()

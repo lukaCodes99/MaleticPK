@@ -5,6 +5,9 @@ import com.maletic.pacijentez.mapper.PatientMapper;
 import com.maletic.pacijentez.model.Patient;
 import com.maletic.pacijentez.repository.PatientRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +31,10 @@ public class PatientService {
         if (lastName != null) lastName = lastName.toLowerCase();
         if (email != null) email = email.toLowerCase();
 
-        return patientRepository.getFIlteredPatients(firstName, lastName, email)
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        Pageable pageable = PageRequest.of(0, 5000, sort);
+
+        return patientRepository.getFIlteredPatients(firstName, lastName, email, pageable)
                 .stream()
                 .map(patientMapper::mapPatientToPatientDTO)
                 .toList();

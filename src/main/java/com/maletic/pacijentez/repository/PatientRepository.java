@@ -1,6 +1,7 @@
 package com.maletic.pacijentez.repository;
 
 import com.maletic.pacijentez.model.Patient;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +19,8 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     )
     List<Patient> getFIlteredPatients(@Param("firstNameParam") String firstName,
                     @Param("lastNameParam") String lastName,
-                    @Param("emailParam") String email
+                    @Param("emailParam") String email,
+                    Pageable pageable
     );
 
 }
