@@ -26,7 +26,7 @@ public class PatientFolderService {
                     patientFolderModel.setDate(extractDateFromFolderName(dateFolder.getName(), firstName, lastName));
                     List<String> images = new ArrayList<>();
                     for (File imageFile : dateFolder.listFiles()) {
-                        if (imageFile.isFile() && imageFile.getName().endsWith(".png")) {
+                        if (imageFile.isFile() && (imageFile.getName().endsWith(".png") || imageFile.getName().endsWith(".jpg") || imageFile.getName().endsWith(".jpeg"))) {
                             images.add(imageFile.getName());
                         }
                     }

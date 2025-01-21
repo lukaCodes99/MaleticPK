@@ -4,7 +4,9 @@ import com.maletic.pacijentez.command.PatientTreatmentCommand;
 import com.maletic.pacijentez.dto.PatientDTO;
 import com.maletic.pacijentez.dto.PatientTreatmentDTO;
 import com.maletic.pacijentez.model.PatientTreatment;
+import com.maletic.pacijentez.model.Photo;
 import com.maletic.pacijentez.service.PatientTreatmentService;
+import com.maletic.pacijentez.service.PhotoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ import java.util.Map;
 public class PatientTreatmentController {
 
     private final PatientTreatmentService patientTreatmentService;
+    private final PhotoService photoService;
 
     @GetMapping("/all")
     public ResponseEntity<List<PatientTreatmentDTO>> getAllPatientTreatments(
@@ -75,6 +78,11 @@ public class PatientTreatmentController {
     public ResponseEntity<Void> deletePatientTreatment(@PathVariable Integer id) {
         patientTreatmentService.deletePatientTreatment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/photos/{patientTreatmentId}")
+    public ResponseEntity<List<Photo>> getPhotosByPatientTreatmentId(@PathVariable Integer patientTreatmentId) {
+        return ResponseEntity.ok(photoService.findByPatientTreatmentId(patientTreatmentId));
     }
 
     private LocalDateTime parseDateTimeOrReturnNull(String date) {

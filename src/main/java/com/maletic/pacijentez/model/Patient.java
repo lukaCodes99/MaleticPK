@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.sql.Clob;
 import java.time.LocalDate;
 
 @EqualsAndHashCode
@@ -29,6 +30,9 @@ public class Patient {
 
     @Column(name = "email")
     private String email;
+
+    @Column(columnDefinition = "clob")
+    private String workingVersion;
 
     public Patient(Integer id) {
         this.id = id;
