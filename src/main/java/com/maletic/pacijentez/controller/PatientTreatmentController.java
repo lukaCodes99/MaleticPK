@@ -67,6 +67,7 @@ public class PatientTreatmentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientTreatment> getPatientTreatmentById(@PathVariable Integer id) {
+        System.out.println("tretman po id");
         PatientTreatment patientTreatment = patientTreatmentService.getPatientTreatmentById(id);
         if (patientTreatment == null) {
             return ResponseEntity.notFound().build();
