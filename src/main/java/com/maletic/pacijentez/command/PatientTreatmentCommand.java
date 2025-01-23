@@ -20,5 +20,6 @@ public class PatientTreatmentCommand {
     private String location;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime appointmentTime;
+    private String workingVersion;
 
 }

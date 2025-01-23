@@ -61,4 +61,11 @@ public class PatientService {
     public void deletePatient(Integer id) {
         patientRepository.deleteById(id);
     }
+
+    public void updateWorkingVersionByPatientId(Integer patientId, String workingVersion) {
+        Patient patient = patientRepository.findById(patientId).
+                orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+        patient.setWorkingVersion(workingVersion);
+        patientRepository.save(patient);
+    }
 }

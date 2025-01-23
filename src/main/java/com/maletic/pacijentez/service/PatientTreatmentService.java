@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class PatientTreatmentService {
 
     private final PatientTreatmentRepository patientTreatmentRepository;
+    private final PatientService patientService;
     private PatientTreatmentMapper patientTreatmentMapper;
     private final EmployeeRepository employeeRepository;
 
@@ -54,9 +55,14 @@ public class PatientTreatmentService {
         if(exstistingTreatment == null){
             return null;
         }
-        System.out.println("inserted at" + exstistingTreatment.getInsertedAt());
+
         PatientTreatment updatedPatientTreatment = patientTreatmentMapper.mapCommandToEntity(patientTreatment);
         updatedPatientTreatment.setInsertedAt(exstistingTreatment.getInsertedAt());
+
+        System.out.println("PatientTreatmentService.updatePatientTreatment" + patientTreatment.getWorkingVersion());
+
+        patientService.updateWorkingVersionByPatientId(patientTreatment.getPatientId(), patientTreatment.getWorkingVersion());
+
         return patientTreatmentMapper.mapPTtoPTdto(patientTreatmentRepository.save(updatedPatientTreatment));
     }
 
