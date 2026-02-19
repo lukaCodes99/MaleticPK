@@ -1,10 +1,13 @@
 package com.maletic.pacijentez.controller;
 
 import com.maletic.pacijentez.command.PatientTreatmentCommand;
+import com.maletic.pacijentez.dto.EmployeeDTO;
 import com.maletic.pacijentez.dto.PatientDTO;
 import com.maletic.pacijentez.dto.PatientTreatmentDTO;
 import com.maletic.pacijentez.model.PatientTreatment;
 import com.maletic.pacijentez.model.Photo;
+import com.maletic.pacijentez.model.UserRole;
+import com.maletic.pacijentez.service.EmployeeService;
 import com.maletic.pacijentez.service.PatientTreatmentService;
 import com.maletic.pacijentez.service.PhotoService;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ public class PatientTreatmentController {
 
     private final PatientTreatmentService patientTreatmentService;
     private final PhotoService photoService;
+    private final EmployeeService employeeService;
 
     @GetMapping("/all")
     public ResponseEntity<List<PatientTreatmentDTO>> getAllPatientTreatments(
@@ -84,6 +88,11 @@ public class PatientTreatmentController {
     @GetMapping("/photos/{patientTreatmentId}")
     public ResponseEntity<List<Photo>> getPhotosByPatientTreatmentId(@PathVariable Integer patientTreatmentId) {
         return ResponseEntity.ok(photoService.findByPatientTreatmentId(patientTreatmentId));
+    }
+
+    @GetMapping("/all-doctors")
+    public ResponseEntity<List<EmployeeDTO>> getAllDoctors(){
+        return ResponseEntity.ok(employeeService.getAllEmployeesByRole("Doctor"));
     }
 
     private LocalDateTime parseDateTimeOrReturnNull(String date) {

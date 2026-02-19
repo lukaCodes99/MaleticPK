@@ -7,6 +7,7 @@ import com.maletic.pacijentez.mapper.EmployeeMapper;
 import com.maletic.pacijentez.model.Employee;
 import com.maletic.pacijentez.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,11 @@ public class EmployeeService {
     }
 
     public List<EmployeeDTO> getAllEmployees() {
-        return employeeRepository.findAll().stream().map(employeeMapper::mapEmployeeToEmployeeDTO).collect(Collectors.toList());
+        return employeeRepository
+                .findAll()
+                .stream()
+                .map(employeeMapper::mapEmployeeToEmployeeDTO)
+                .collect(Collectors.toList());
     }
 
     public Employee getEmployeeById(Integer id) {
@@ -62,5 +67,12 @@ public class EmployeeService {
         employee.setPassword(passwordEncoder.encode(newPassword));
         employeeRepository.save(employee);
         return true;
+    }
+
+    public List<EmployeeDTO> getAllEmployeesByRole(String role) {
+        return employeeRepository.findAllByUsersByRole(role)
+                .stream()
+                .map(employeeMapper::mapEmployeeToEmployeeDTO)
+                .collect(Collectors.toList());
     }
 }

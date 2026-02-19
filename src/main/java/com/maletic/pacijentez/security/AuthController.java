@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public JwtResponseDTO authenticate(@RequestBody AuthRequestDTO request) {
-
+        System.out.println(request.getUsername() + " " + request.getPassword());
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 

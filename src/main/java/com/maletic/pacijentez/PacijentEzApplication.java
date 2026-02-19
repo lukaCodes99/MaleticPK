@@ -19,12 +19,12 @@ public class PacijentEzApplication {
         SpringApplication.run(PacijentEzApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner clearRefreshTokenTable() {
-        SecurityContextHolder.clearContext();
-        return args -> {
-            refreshTokenRepository.deleteAll();
-        };
-    }
+//    @Bean
+//    public CommandLineRunner clearRefreshTokenTable() {
+//        SecurityContextHolder.clearContext();
+//        return args -> {
+//            refreshTokenRepository.deleteAll();
+//        };
+//    }
 
 }

@@ -5,10 +5,13 @@ INSERT INTO UserRole (name) VALUES ('head_nurse');
 INSERT INTO UserRole (name) VALUES ('doctor');
 INSERT INTO UserRole (name) VALUES ('nurse');
 
-INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Ana', 'Maletić', 'amaletic', 'password1', (SELECT id FROM UserRole WHERE name = 'admin'));
-INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Valerija', 'Kelenić', 'vkelenic', 'password2', (SELECT id FROM UserRole WHERE name = 'head_nurse'));
-INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Duško', 'Maletić', 'dmaletic', 'password3', (SELECT id FROM UserRole WHERE name = 'doctor'));
-INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Medicinska', 'Sestra', 'msestra', 'password4', (SELECT id FROM UserRole WHERE name = 'nurse'));
+
+INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('test', 'test', 'luka', '$2a$10$jglFRiklKdMiJDzlt9bxyeBjO0zVOupRFK.KYFsU0jgGF09mnd3WO', (SELECT id FROM UserRole WHERE name = 'admin'));
+INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Jane', 'Doee', 'jdoe', '$2a$10$GIu76jbFa12LnT1xjis3Uu3ObHd92i4p4yPalK5RSGOpoqp0OdO6u', (SELECT id FROM UserRole WHERE name = 'nurse'));
+INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Valerija', 'Kelenić', 'vkelenic', '$2a$10$Z1AbXu58jCGia5sHY4//WOnLjt3iSiVOdgJtyxqZn0lM0W.xg7Qp2', (SELECT id FROM UserRole WHERE name = 'head_nurse'));
+INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Ana', 'Maletić', 'amaletic', '$2a$10$kFgXbRIKQsMboFPymJQOkuAr0FMqW0HOX2MIIYFw68XenGefnyfc6', (SELECT id FROM UserRole WHERE name = 'doctor'));
+INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Duško', 'Maletić', 'dmaletic', '$2a$10$uhg9YXR5VdVnb3DD/97rLuLY7Uzx6H1feOCbcf9PwQo25m0jnFxgy', (SELECT id FROM UserRole WHERE name = 'doctor'));
+INSERT INTO Employee (firstName, lastName, username, password, role) VALUES ('Medicinska', 'Sestra', 'msestra', '$2a$10$1nKCPjFEHJE67o.pcjdDHuGxo0Ldz84/7cTgazikQ6g5d1BhQoXtq', (SELECT id FROM UserRole WHERE name = 'nurse'));
 
 
 INSERT INTO Treatment (name, price) VALUES ('PRP', 1000);

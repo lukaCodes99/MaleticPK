@@ -20,7 +20,6 @@ public class PhotoService {
      ako baš u file sistemu želimo naći, sve slike će biti u folderima koji će biti odvojeni prema id tretmana pacijenta
      *
      */
-
     public void savePhoto(Photo photo) {
         //path mora biti /treatmement-images/{patientTreatmentId}/{photoId}
         photoRepository.save(photo);
